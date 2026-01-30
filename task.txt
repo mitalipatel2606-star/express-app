@@ -1,0 +1,12 @@
+REST API-JSON
+GET/users: list all users in (Render HTML form)
+/api to the path: return json object which can work on phone as well as broswers
+GET/api/user/1: user with id 1
+
+GET/api/users/2: user with id 2
+POST/api/users: create new user
+dynamic routes
+
+PATCH/api/users/1:update user id 1
+DELETE/api/users/1: delete user id 1
+

@@ -1,0 +1,17 @@
+app.get("/api/users/:id", (req, res) => {
+    const id = Number(req.params.id);
+    const user = users.find((user) =>
+        user.id === id);
+    res.json(user)
+})
+
+
+app.post("/api/users/:id", (req, res) => {
+    return res.json({ status: 'pending' });
+})
+app.patch("/api/users/:id", (req, res) => {
+    return res.json({ status: 'pending' });
+})
+app.delete("/api/users/:id", (req, res) => {
+    return res.json({ status: 'pending' });
+})
