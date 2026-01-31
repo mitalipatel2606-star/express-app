@@ -1,8 +1,11 @@
 const express = require("express");
 const app = express();
 const users = require("./MOCK_DATA.json");
+const fs = require("fs")
 
 const port = 8000;
+//Middleware-Plugin
+app.use(express.urlencoded({ extended: false }));
 
 app.get("/api/users", (req, res) => {
     return res.json(users);
@@ -29,12 +32,19 @@ app
         //to delete user
         return res.json({ status: 'pending' });
     })
-app.post((req, res) => {
-    return res.json({ status: 'Pending' });
+app.post("/api/users", (req, res) => {
+    const body = req.body;
+    users.push({ ...body, id: users.length + 1 });
+    fs.writeFile("./MOCK_DATA.json", JSON.stringify(users), (err, data) => {
+        console.log(body);
+        return res.json({ status: 'Success', id: users.length });
+    })
+    // console.log("Body: ", body);
+
 })
 
 
 
-listen(port, () => {
-    console.log("Server Started");
+app.listen(port, () => {
+    console.log("Server Started at PORT:", port);
 })
