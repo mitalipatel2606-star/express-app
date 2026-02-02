@@ -8,12 +8,17 @@ const port = 8000;
 app.use(express.urlencoded({ extended: false }));
 app.use((req, res, next) => {
     console.log("Hello from the second Middleware");
-    return res.json({ msg: "Hello from the second middleware" });
+    // return res.json({ msg: "Hello from the second middleware" });
+    next();
+});
+app.use((req, res, next) => {
+    fs.appendFile("log.txt", `\n${Date.now()}:${req.ip} ${req.method}: ${req.path}`,
+        (err, data) => { next(); })
 });
 
 app.get("/api/users", (req, res) => {
     return res.json(users);
-})
+});
 app.get("/users", (req, res) => {
     const html = `
     <ul> ${users.map((user) => `<li>${user.first_name} </li>`).join("")}
