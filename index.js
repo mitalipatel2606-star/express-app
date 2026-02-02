@@ -6,6 +6,10 @@ const fs = require("fs")
 const port = 8000;
 //Middleware-Plugin
 app.use(express.urlencoded({ extended: false }));
+app.use((req, res, next) => {
+    console.log("Hello from the second Middleware");
+    return res.json({ msg: "Hello from the second middleware" });
+});
 
 app.get("/api/users", (req, res) => {
     return res.json(users);
@@ -25,7 +29,11 @@ app
         res.json(user)
     })
     .patch((req, res) => {
-        //to add new user
+        //to change parts of the user data
+        const id = Number(req.params.id);
+        const user = users.find((user) => user.id === id);
+
+        const updates = req.body;
         return res.json({ status: 'pending' });
     })
     .delete((req, res) => {
@@ -33,6 +41,7 @@ app
         return res.json({ status: 'pending' });
     })
 app.post("/api/users", (req, res) => {
+    //to add new user
     const body = req.body;
     users.push({ ...body, id: users.length + 1 });
     fs.writeFile("./MOCK_DATA.json", JSON.stringify(users), (err, data) => {
