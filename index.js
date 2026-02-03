@@ -1,13 +1,15 @@
 const express = require("express");
 const app = express();
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
 const users = require("./MOCK_DATA.json");
 const fs = require("fs")
 
 const port = 8000;
 //Middleware-Plugin
-app.use(express.urlencoded({ extended: false }));
+
 app.use((req, res, next) => {
-    console.log("Hello from the second Middleware");
+    // console.log("Hello from the second Middleware");
     // return res.json({ msg: "Hello from the second middleware" });
     next();
 });
@@ -50,14 +52,22 @@ app
 app.post("/api/users", (req, res) => {
     //to add new user
     const body = req.body;
-    users.push({ ...body, id: users.length + 1 });
-    fs.writeFile("./MOCK_DATA.json", JSON.stringify(users), (err, data) => {
-        console.log(body);
-        return res.status(201).json({ status: 'Success', id: users.length });
-    })
+    console.log("Body: ", body);
+    if (!body || !body.first_name) {
+        return res.status(400).json({ status: 'error', message: 'Invalid body' });
+    }
+    const newuser = { ...body, id: users.length + 1 }
+    users.push(newuser);
+    fs.writeFile("./MOCK_DATA.json", JSON.stringify(users, null, 2), (err) => {
+        if (err) {
+            console.error("Error writing file:", err);
+            return res.status(500).json({ status: 'error' });
+        }
+        return res.status(201).json({ status: "success", id: newuser.id });
+    });
     // console.log("Body: ", body);
 
-})
+});
 
 
 
