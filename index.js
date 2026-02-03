@@ -17,6 +17,8 @@ app.use((req, res, next) => {
 });
 
 app.get("/api/users", (req, res) => {
+    res.setHeader("X-My-Name", "Rujal");
+    console.log(req.headers);
     return res.json(users);
 });
 app.get("/users", (req, res) => {
@@ -51,7 +53,7 @@ app.post("/api/users", (req, res) => {
     users.push({ ...body, id: users.length + 1 });
     fs.writeFile("./MOCK_DATA.json", JSON.stringify(users), (err, data) => {
         console.log(body);
-        return res.json({ status: 'Success', id: users.length });
+        return res.status(201).json({ status: 'Success', id: users.length });
     })
     // console.log("Body: ", body);
 

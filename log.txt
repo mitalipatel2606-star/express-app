@@ -1,2 +1,8 @@
 
 1770019939437:::1 GET: /api/users
+1770029860642:::1 GET: /api/users
+1770029919039:::1 GET: /api/users
+1770029938913:::1 GET: /api/users
+1770116098438:::1 POST: /api/users
+1770116180151:::1 GET: /users
+1770116201772:::1 GET: /api/users
