@@ -1,4 +1,5 @@
 const express = require("express");
+const mongoose = require("mongoose   ");
 const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -35,6 +36,7 @@ app
         const id = Number(req.params.id);
         const user = users.find((user) =>
             user.id === id);
+        if (!user) return res.status(404).json({ error: "User Not Found" });
         res.json(user)
     })
     .patch((req, res) => {
@@ -52,6 +54,9 @@ app
 app.post("/api/users", (req, res) => {
     //to add new user
     const body = req.body;
+    if (!body || !body.first_name || !body.last_name || !body.gender || !body.email || !body.job_title) {
+        return res.status(400).json({ msg: "Incomplete fields" });
+    }
     console.log("Body: ", body);
     if (!body || !body.first_name) {
         return res.status(400).json({ status: 'error', message: 'Invalid body' });
